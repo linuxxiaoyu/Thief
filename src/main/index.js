@@ -141,47 +141,47 @@ function init() {
     createTray();
 }
 
-function createVideo() {
-    /**
-     * Initial window options
-     */
-    var frame = true;
-    if (isMac) {
-        frame = false;
-    }
+// function createVideo() {
+//     /**
+//      * Initial window options
+//      */
+//     var frame = true;
+//     if (isMac) {
+//         frame = false;
+//     }
 
-    videoWindow = new BrowserWindow({
-        useContentSize: true,
-        width: 478,
-        height: 28,
-        maximizable: false,
-        minimizable: false,
-        transparent: true,
-        resizable: true,
-        frame: frame,
-        webPreferences: {
-            nodeIntegration: true
-        },
-    })
+//     videoWindow = new BrowserWindow({
+//         useContentSize: true,
+//         width: 478,
+//         height: 28,
+//         maximizable: false,
+//         minimizable: false,
+//         transparent: true,
+//         resizable: true,
+//         frame: frame,
+//         webPreferences: {
+//             nodeIntegration: true
+//         },
+//     })
 
-    let webContents = videoWindow.webContents;
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1);
-        webContents.setVisualZoomLevelLimits(1, 1);
-        webContents.setLayoutZoomLevelLimits(0, 0);
-    })
+//     let webContents = videoWindow.webContents;
+//     webContents.on('did-finish-load', () => {
+//         webContents.setZoomFactor(1);
+//         webContents.setVisualZoomLevelLimits(1, 1);
+//         webContents.setLayoutZoomLevelLimits(0, 0);
+//     })
 
-    videoWindow.loadURL(videoURL)
+//     videoWindow.loadURL(videoURL)
 
-    videoWindow.setOpacity(1.0)
+//     videoWindow.setOpacity(1.0)
 
-    videoWindow.setAlwaysOnTop(true);
-    videoWindow.setSkipTaskbar(true);
+//     videoWindow.setAlwaysOnTop(true);
+//     videoWindow.setSkipTaskbar(true);
 
-    videoWindow.on('closed', () => {
-        videoWindow = null
-    })
-}
+//     videoWindow.on('closed', () => {
+//         videoWindow = null
+//     })
+// }
 
 function createPdf() {
     /**
@@ -954,19 +954,19 @@ function createTray() {
             }
         }
     }, {
-        label: '视频摸鱼',
-        click() {
-            if (videoWindow === "null" || videoWindow === "undefined" || typeof(videoWindow) === "undefined") {
-                createVideo();
-            } else {
-                try {
-                    videoWindow.show();
-                } catch (error) {
-                    createVideo();
-                }
-            }
-        }
-    }, {
+    //     label: '视频摸鱼',
+    //     click() {
+    //         if (videoWindow === "null" || videoWindow === "undefined" || typeof(videoWindow) === "undefined") {
+    //             createVideo();
+    //         } else {
+    //             try {
+    //                 videoWindow.show();
+    //             } catch (error) {
+    //                 createVideo();
+    //             }
+    //         }
+    //     }
+    // }, {
         label: 'PDF摸鱼',
         click() {
             if (pdfWindow === "null" || pdfWindow === "undefined" || typeof(pdfWindow) === "undefined") {
@@ -1169,39 +1169,39 @@ ipcMain.on('pdfOpacity', function(e, v) {
     }
 })
 
-ipcMain.on('videoOpacity', function(e, v) {
-    if (videoWindow != null) {
-        var num = videoWindow.getOpacity();
+// ipcMain.on('videoOpacity', function(e, v) {
+//     if (videoWindow != null) {
+//         var num = videoWindow.getOpacity();
 
-        if (v == "-") {
-            if (num <= 0.2) {
-                videoWindow.setOpacity(0.1);
-            } else {
-                num = num - 0.1
-                videoWindow.setOpacity(num);
-            }
-        } else if (v == "+") {
-            if (num >= 1.0) {
-                videoWindow.setOpacity(1.0);
-            } else {
-                num = num + 0.1
-                videoWindow.setOpacity(num);
-            }
-        } else if (v == "exit") {
-            if (videoWindow != null) {
-                videoWindow.close();
-            }
-        } else if (v === "change") {
-            if (videoWindow != null) {
-                var x = videoWindow.getSize();
-                if (x[1] <= 100) {
-                    videoWindow.setSize(715, 500);
-                    videoWindow.center();
-                }
-            }
-        }
-    }
-})
+//         if (v == "-") {
+//             if (num <= 0.2) {
+//                 videoWindow.setOpacity(0.1);
+//             } else {
+//                 num = num - 0.1
+//                 videoWindow.setOpacity(num);
+//             }
+//         } else if (v == "+") {
+//             if (num >= 1.0) {
+//                 videoWindow.setOpacity(1.0);
+//             } else {
+//                 num = num + 0.1
+//                 videoWindow.setOpacity(num);
+//             }
+//         } else if (v == "exit") {
+//             if (videoWindow != null) {
+//                 videoWindow.close();
+//             }
+//         } else if (v === "change") {
+//             if (videoWindow != null) {
+//                 var x = videoWindow.getSize();
+//                 if (x[1] <= 100) {
+//                     videoWindow.setSize(715, 500);
+//                     videoWindow.center();
+//                 }
+//             }
+//         }
+//     }
+// })
 
 // const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
 //   // Someone tried to run a second instance, we should focus our window.
