@@ -18,16 +18,16 @@ export default new Router({
             path: '/web',
             name: 'web',
             component: require('@/components/web').default
-        },
+        // },
         // {
         //     path: '/so',
         //     name: 'so',
         //     component: require('@/components/so').default
         // },
-        {
-            path: '/setting',
-            name: 'setting',
-            component: require('@/components/setting').default
+        // {
+        //     path: '/setting',
+        //     name: 'setting',
+        //     component: require('@/components/setting').default
         // },
         // {
         //     path: '/desktop',

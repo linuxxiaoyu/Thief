@@ -91,13 +91,13 @@ const isMac = 'darwin' === process.platform;
 //     `http://localhost:9080/#/so` :
 //     `file://${__dirname}/index.html#so`
 
-const settingURL = process.env.NODE_ENV === 'development' ?
-    `http://localhost:9080/#/setting` :
-    `file://${__dirname}/index.html#setting`
+// const settingURL = process.env.NODE_ENV === 'development' ?
+//     `http://localhost:9080/#/setting` :
+//     `file://${__dirname}/index.html#setting`
 
-const desktopURL = process.env.NODE_ENV === 'development' ?
-    `http://localhost:9080/#/desktop` :
-    `file://${__dirname}/index.html#desktop`
+// const desktopURL = process.env.NODE_ENV === 'development' ?
+//     `http://localhost:9080/#/desktop` :
+//     `file://${__dirname}/index.html#desktop`
 
 const webURL = process.env.NODE_ENV === 'development' ?
     `http://localhost:9080/#/web` :
@@ -303,36 +303,36 @@ function createWeb() {
 // }
 
 
-function createWindownSetting() {
-    /**
-     * Initial window options
-     */
-    settingWindow = new BrowserWindow({
-        title: '设 置',
-        useContentSize: true,
-        width: 715,
-        height: 630,
-        resizable: false,
-        maximizable: false,
-        minimizable: false,
-        webPreferences: {
-            nodeIntegration: true,
-        },
-    })
+// function createWindownSetting() {
+//     /**
+//      * Initial window options
+//      */
+//     settingWindow = new BrowserWindow({
+//         title: '设 置',
+//         useContentSize: true,
+//         width: 715,
+//         height: 630,
+//         resizable: false,
+//         maximizable: false,
+//         minimizable: false,
+//         webPreferences: {
+//             nodeIntegration: true,
+//         },
+//     })
 
-    let webContents = settingWindow.webContents;
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1);
-        webContents.setVisualZoomLevelLimits(1, 1);
-        webContents.setLayoutZoomLevelLimits(0, 0);
-    })
+//     let webContents = settingWindow.webContents;
+//     webContents.on('did-finish-load', () => {
+//         webContents.setZoomFactor(1);
+//         webContents.setVisualZoomLevelLimits(1, 1);
+//         webContents.setLayoutZoomLevelLimits(0, 0);
+//     })
 
-    settingWindow.loadURL(settingURL)
+//     settingWindow.loadURL(settingURL)
 
-    settingWindow.on('closed', () => {
-        settingWindow = null
-    })
-}
+//     settingWindow.on('closed', () => {
+//         settingWindow = null
+//     })
+// }
 
 // function createWindownDesktop() {
 //     /**
@@ -1029,19 +1029,19 @@ function createTray() {
     //         }
     //     }
     // }, {
-        label: '设置',
-        click() {
-            if (settingWindow === "null" || settingWindow === "undefined" || typeof(settingWindow) === "undefined") {
-                createWindownSetting();
-            } else {
-                try {
-                    settingWindow.show();
-                } catch (error) {
-                    createWindownSetting();
-                }
-            }
-        }
-    }, {
+    //     label: '设置',
+    //     click() {
+    //         if (settingWindow === "null" || settingWindow === "undefined" || typeof(settingWindow) === "undefined") {
+    //             createWindownSetting();
+    //         } else {
+    //             try {
+    //                 settingWindow.show();
+    //             } catch (error) {
+    //                 createWindownSetting();
+    //             }
+    //         }
+    //     }
+    // }, {
         type: "separator"
     }, {
         accelerator: 'CommandOrControl+Alt+X',
