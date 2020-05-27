@@ -334,76 +334,76 @@ function createWindownSetting() {
     })
 }
 
-function createWindownDesktop() {
-    /**
-     * Initial window options
-     */
+// function createWindownDesktop() {
+//     /**
+//      * Initial window options
+//      */
 
-    var width = 856;
-    var height = 47;
-    var x = 356;
-    var y = 429;
+//     var width = 856;
+//     var height = 47;
+//     var x = 356;
+//     var y = 429;
 
-    var desktop_wh = db.get('desktop_wh');
-    var desktop_wz = db.get('desktop_wz');
+//     var desktop_wh = db.get('desktop_wh');
+//     var desktop_wz = db.get('desktop_wz');
 
-    var arr_wh = desktop_wh.split(",");
-    var arr_wz = desktop_wz.split(",");
+//     var arr_wh = desktop_wh.split(",");
+//     var arr_wz = desktop_wz.split(",");
 
-    if (arr_wh.length == 2) {
-        width = parseInt(arr_wh[0]);
-        height = parseInt(arr_wh[1]);
-    }
+//     if (arr_wh.length == 2) {
+//         width = parseInt(arr_wh[0]);
+//         height = parseInt(arr_wh[1]);
+//     }
 
-    if (arr_wh.length == 2) {
-        x = parseInt(arr_wz[1]);
-        y = parseInt(arr_wz[0]);
-    }
+//     if (arr_wh.length == 2) {
+//         x = parseInt(arr_wz[1]);
+//         y = parseInt(arr_wz[0]);
+//     }
 
-    desktopWindow = new BrowserWindow({
-        useContentSize: true,
-        width: width,
-        height: height,
-        resizable: true,
-        frame: false,
-        transparent: true,
-        hasShadow: false,
-        y: x,
-        x: y,
-        webPreferences: {
-            nodeIntegration: true,
-        },
-    })
+//     desktopWindow = new BrowserWindow({
+//         useContentSize: true,
+//         width: width,
+//         height: height,
+//         resizable: true,
+//         frame: false,
+//         transparent: true,
+//         hasShadow: false,
+//         y: x,
+//         x: y,
+//         webPreferences: {
+//             nodeIntegration: true,
+//         },
+//     })
 
-    let webContents = desktopWindow.webContents;
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1);
-        webContents.setVisualZoomLevelLimits(1, 1);
-        webContents.setLayoutZoomLevelLimits(0, 0);
-    })
+//     let webContents = desktopWindow.webContents;
+//     webContents.on('did-finish-load', () => {
+//         webContents.setZoomFactor(1);
+//         webContents.setVisualZoomLevelLimits(1, 1);
+//         webContents.setLayoutZoomLevelLimits(0, 0);
+//     })
 
-    desktopWindow.loadURL(desktopURL)
+//     desktopWindow.loadURL(desktopURL)
 
-    desktopWindow.setAlwaysOnTop(true);
+//     desktopWindow.setAlwaysOnTop(true);
 
-    desktopWindow.setSkipTaskbar(true);
+//     desktopWindow.setSkipTaskbar(true);
 
-    desktopWindow.setTouchBar(createTouchBarButton())
+//     desktopWindow.setTouchBar(createTouchBarButton())
 
-    desktopWindow.on('closed', () => {
-        desktopWindow = null
-    })
+//     desktopWindow.on('closed', () => {
+//         desktopWindow = null
+//     })
 
-    desktopWindow.on('resize', () => {
-        var size = desktopWindow.getSize();
-        db.set("desktop_wh", size[0].toString() + "," + size[1].toString());
-    })
+//     desktopWindow.on('resize', () => {
+//         var size = desktopWindow.getSize();
+//         db.set("desktop_wh", size[0].toString() + "," + size[1].toString());
+//     })
 
-    desktopWindow.on('move', () => {
-        var position = desktopWindow.getPosition();
-        db.set("desktop_wz", position[0].toString() + "," + position[1].toString());
-    })
-}
+//     desktopWindow.on('move', () => {
+//         var position = desktopWindow.getPosition();
+//         db.set("desktop_wz", position[0].toString() + "," + position[1].toString());
+//     })
+// }
 
 function createWindownBarDesktop() {
     /**
@@ -860,32 +860,32 @@ function createTray() {
                 BossKey(1);
             }
         }, {
-            label: '桌面模式',
-            type: 'radio',
-            checked: db.get('curr_model') === '2',
-            click() {
-                db.set("curr_model", "2")
+        //     label: '桌面模式',
+        //     type: 'radio',
+        //     checked: db.get('curr_model') === '2',
+        //     click() {
+        //         db.set("curr_model", "2")
 
-                if (desktopBarWindow != null) {
-                    desktopBarWindow.close();
-                }
+        //         if (desktopBarWindow != null) {
+        //             desktopBarWindow.close();
+        //         }
 
-                if (desktopWindow === "null" || desktopWindow === "undefined" || typeof(desktopWindow) === "undefined") {
-                    createWindownDesktop();
-                } else {
+        //         if (desktopWindow === "null" || desktopWindow === "undefined" || typeof(desktopWindow) === "undefined") {
+        //             createWindownDesktop();
+        //         } else {
 
-                    try {
-                        desktopWindow.show();
-                    } catch (error) {
-                        createWindownDesktop();
-                    }
-                }
+        //             try {
+        //                 desktopWindow.show();
+        //             } catch (error) {
+        //                 createWindownDesktop();
+        //             }
+        //         }
 
-                setTimeout(() => {
-                    BossKey(1);
-                }, 1000);
-            }
-        }, {
+        //         setTimeout(() => {
+        //             BossKey(1);
+        //         }, 1000);
+        //     }
+        // }, {
             label: 'TouchBar模式',
             type: 'radio',
             checked: db.get('curr_model') === '3',

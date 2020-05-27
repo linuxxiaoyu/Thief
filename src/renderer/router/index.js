@@ -28,11 +28,11 @@ export default new Router({
             path: '/setting',
             name: 'setting',
             component: require('@/components/setting').default
-        },
-        {
-            path: '/desktop',
-            name: 'desktop',
-            component: require('@/components/desktop').default
+        // },
+        // {
+        //     path: '/desktop',
+        //     name: 'desktop',
+        //     component: require('@/components/desktop').default
         }
     ]
 })
