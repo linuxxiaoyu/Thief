@@ -19,11 +19,11 @@ export default new Router({
             name: 'web',
             component: require('@/components/web').default
         },
-        {
-            path: '/so',
-            name: 'so',
-            component: require('@/components/so').default
-        },
+        // {
+        //     path: '/so',
+        //     name: 'so',
+        //     component: require('@/components/so').default
+        // },
         {
             path: '/setting',
             name: 'setting',

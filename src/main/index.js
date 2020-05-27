@@ -87,9 +87,9 @@ let pdfWindow;
 
 const isMac = 'darwin' === process.platform;
 
-const soURL = process.env.NODE_ENV === 'development' ?
-    `http://localhost:9080/#/so` :
-    `file://${__dirname}/index.html#so`
+// const soURL = process.env.NODE_ENV === 'development' ?
+//     `http://localhost:9080/#/so` :
+//     `file://${__dirname}/index.html#so`
 
 const settingURL = process.env.NODE_ENV === 'development' ?
     `http://localhost:9080/#/setting` :
@@ -270,37 +270,37 @@ function createWeb() {
     })
 }
 
-function createSoSetting() {
-    /**
-     * Initial window options
-     */
+// function createSoSetting() {
+//     /**
+//      * Initial window options
+//      */
 
-    soWindow = new BrowserWindow({
-        title: '搜 索',
-        useContentSize: true,
-        width: 334,
-        height: 540,
-        // resizable: false,
-        maximizable: false,
-        minimizable: false,
-        webPreferences: {
-            nodeIntegration: true,
-        },
-    })
+//     soWindow = new BrowserWindow({
+//         title: '搜 索',
+//         useContentSize: true,
+//         width: 334,
+//         height: 540,
+//         // resizable: false,
+//         maximizable: false,
+//         minimizable: false,
+//         webPreferences: {
+//             nodeIntegration: true,
+//         },
+//     })
 
-    let webContents = soWindow.webContents;
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1);
-        webContents.setVisualZoomLevelLimits(1, 1);
-        webContents.setLayoutZoomLevelLimits(0, 0);
-    })
+//     let webContents = soWindow.webContents;
+//     webContents.on('did-finish-load', () => {
+//         webContents.setZoomFactor(1);
+//         webContents.setVisualZoomLevelLimits(1, 1);
+//         webContents.setLayoutZoomLevelLimits(0, 0);
+//     })
 
-    soWindow.loadURL(soURL)
+//     soWindow.loadURL(soURL)
 
-    soWindow.on('closed', () => {
-        soWindow = null
-    })
-}
+//     soWindow.on('closed', () => {
+//         soWindow = null
+//     })
+// }
 
 
 function createWindownSetting() {
@@ -1016,19 +1016,19 @@ function createTray() {
     }, {
         type: "separator"
     }, {
-        label: '搜索内容',
-        click() {
-            if (soWindow === "null" || soWindow === "undefined" || typeof(soWindow) === "undefined") {
-                createSoSetting();
-            } else {
-                try {
-                    soWindow.show();
-                } catch (error) {
-                    createSoSetting();
-                }
-            }
-        }
-    }, {
+    //     label: '搜索内容',
+    //     click() {
+    //         if (soWindow === "null" || soWindow === "undefined" || typeof(soWindow) === "undefined") {
+    //             createSoSetting();
+    //         } else {
+    //             try {
+    //                 soWindow.show();
+    //             } catch (error) {
+    //                 createSoSetting();
+    //             }
+    //         }
+    //     }
+    // }, {
         label: '设置',
         click() {
             if (settingWindow === "null" || settingWindow === "undefined" || typeof(settingWindow) === "undefined") {
