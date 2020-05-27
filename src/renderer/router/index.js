@@ -5,16 +5,16 @@ Vue.use(Router)
 
 export default new Router({
     routes: [{
-            path: '/pdf',
-            name: 'pdf',
-            component: require('@/components/pdf').default
-        },
-        {
-            path: '/video',
-            name: 'video',
-            component: require('@/components/video').default
-        },
-        {
+        //     path: '/pdf',
+        //     name: 'pdf',
+        //     component: require('@/components/pdf').default
+        // },
+        // {
+        //     path: '/video',
+        //     name: 'video',
+        //     component: require('@/components/video').default
+        // },
+        // {
             path: '/web',
             name: 'web',
             component: require('@/components/web').default

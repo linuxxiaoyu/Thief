@@ -103,13 +103,13 @@ const webURL = process.env.NODE_ENV === 'development' ?
     `http://localhost:9080/#/web` :
     `file://${__dirname}/index.html#web`
 
-const videoURL = process.env.NODE_ENV === 'development' ?
-    `http://localhost:9080/#/video` :
-    `file://${__dirname}/index.html#video`
+// const videoURL = process.env.NODE_ENV === 'development' ?
+//     `http://localhost:9080/#/video` :
+//     `file://${__dirname}/index.html#video`
 
-const pdfURL = process.env.NODE_ENV === 'development' ?
-    `http://localhost:9080/#/pdf` :
-    `file://${__dirname}/index.html#pdf`
+// const pdfURL = process.env.NODE_ENV === 'development' ?
+//     `http://localhost:9080/#/pdf` :
+//     `file://${__dirname}/index.html#pdf`
 
 function init() {
     Menu.setApplicationMenu(null);
@@ -183,48 +183,48 @@ function init() {
 //     })
 // }
 
-function createPdf() {
-    /**
-     * Initial window options
-     */
+// function createPdf() {
+//     /**
+//      * Initial window options
+//      */
 
-    var frame = true;
-    if (isMac) {
-        frame = false;
-    }
+//     var frame = true;
+//     if (isMac) {
+//         frame = false;
+//     }
 
-    pdfWindow = new BrowserWindow({
-        useContentSize: true,
-        width: 478,
-        height: 28,
-        maximizable: false,
-        minimizable: false,
-        transparent: true,
-        resizable: true,
-        frame: frame,
-        webPreferences: {
-            nodeIntegration: true
-        },
-    })
+//     pdfWindow = new BrowserWindow({
+//         useContentSize: true,
+//         width: 478,
+//         height: 28,
+//         maximizable: false,
+//         minimizable: false,
+//         transparent: true,
+//         resizable: true,
+//         frame: frame,
+//         webPreferences: {
+//             nodeIntegration: true
+//         },
+//     })
 
-    let webContents = pdfWindow.webContents;
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1);
-        webContents.setVisualZoomLevelLimits(1, 1);
-        webContents.setLayoutZoomLevelLimits(0, 0);
-    })
+//     let webContents = pdfWindow.webContents;
+//     webContents.on('did-finish-load', () => {
+//         webContents.setZoomFactor(1);
+//         webContents.setVisualZoomLevelLimits(1, 1);
+//         webContents.setLayoutZoomLevelLimits(0, 0);
+//     })
 
-    pdfWindow.loadURL(pdfURL)
+//     pdfWindow.loadURL(pdfURL)
 
-    pdfWindow.setOpacity(1.0)
+//     pdfWindow.setOpacity(1.0)
 
-    pdfWindow.setAlwaysOnTop(true);
-    pdfWindow.setSkipTaskbar(true);
+//     pdfWindow.setAlwaysOnTop(true);
+//     pdfWindow.setSkipTaskbar(true);
 
-    pdfWindow.on('closed', () => {
-        pdfWindow = null
-    })
-}
+//     pdfWindow.on('closed', () => {
+//         pdfWindow = null
+//     })
+// }
 
 function createWeb() {
     /**
@@ -967,19 +967,19 @@ function createTray() {
     //         }
     //     }
     // }, {
-        label: 'PDF摸鱼',
-        click() {
-            if (pdfWindow === "null" || pdfWindow === "undefined" || typeof(pdfWindow) === "undefined") {
-                createPdf();
-            } else {
-                try {
-                    pdfWindow.show();
-                } catch (error) {
-                    createPdf();
-                }
-            }
-        }
-    }, {
+    //     label: 'PDF摸鱼',
+    //     click() {
+    //         if (pdfWindow === "null" || pdfWindow === "undefined" || typeof(pdfWindow) === "undefined") {
+    //             createPdf();
+    //         } else {
+    //             try {
+    //                 pdfWindow.show();
+    //             } catch (error) {
+    //                 createPdf();
+    //             }
+    //         }
+    //     }
+    // }, {
         type: "separator"
     }, {
         label: '鼠标翻页',
@@ -1106,8 +1106,8 @@ ipcMain.on('webOpacity', function(e, v) {
         var num = webWindow.getOpacity();
 
         if (v == "-") {
-            if (num <= 0.2) {
-                webWindow.setOpacity(0.1);
+            if (num <= 0.0) {
+                webWindow.setOpacity(0.0);
             } else {
                 num = num - 0.1
                 webWindow.setOpacity(num);
@@ -1135,39 +1135,39 @@ ipcMain.on('webOpacity', function(e, v) {
     }
 })
 
-ipcMain.on('pdfOpacity', function(e, v) {
-    if (pdfWindow != null) {
-        var num = pdfWindow.getOpacity();
+// ipcMain.on('pdfOpacity', function(e, v) {
+//     if (pdfWindow != null) {
+//         var num = pdfWindow.getOpacity();
 
-        if (v == "-") {
-            if (num <= 0.2) {
-                pdfWindow.setOpacity(0.1);
-            } else {
-                num = num - 0.1
-                pdfWindow.setOpacity(num);
-            }
-        } else if (v == "+") {
-            if (num >= 1.0) {
-                pdfWindow.setOpacity(1.0);
-            } else {
-                num = num + 0.1
-                pdfWindow.setOpacity(num);
-            }
-        } else if (v == "exit") {
-            if (pdfWindow != null) {
-                pdfWindow.close();
-            }
-        } else if (v === "change") {
-            if (pdfWindow != null) {
-                var x = pdfWindow.getSize();
-                if (x[1] <= 100) {
-                    pdfWindow.setSize(715, 500);
-                    pdfWindow.center();
-                }
-            }
-        }
-    }
-})
+//         if (v == "-") {
+//             if (num <= 0.2) {
+//                 pdfWindow.setOpacity(0.1);
+//             } else {
+//                 num = num - 0.1
+//                 pdfWindow.setOpacity(num);
+//             }
+//         } else if (v == "+") {
+//             if (num >= 1.0) {
+//                 pdfWindow.setOpacity(1.0);
+//             } else {
+//                 num = num + 0.1
+//                 pdfWindow.setOpacity(num);
+//             }
+//         } else if (v == "exit") {
+//             if (pdfWindow != null) {
+//                 pdfWindow.close();
+//             }
+//         } else if (v === "change") {
+//             if (pdfWindow != null) {
+//                 var x = pdfWindow.getSize();
+//                 if (x[1] <= 100) {
+//                     pdfWindow.setSize(715, 500);
+//                     pdfWindow.center();
+//                 }
+//             }
+//         }
+//     }
+// })
 
 // ipcMain.on('videoOpacity', function(e, v) {
 //     if (videoWindow != null) {
