@@ -92,7 +92,37 @@ const webURL = process.env.NODE_ENV === 'development' ?
     `http://localhost:9080/#/web` :
     `file://${__dirname}/index.html#web`
 
+
+var win_data = [];
+
+function in_array(search,array){
+    for(var i in array){
+        if(array[i]==search){
+            return true;
+        }
+    }
+    return false;
+}
+
+function get_argv() {
+    process.argv.forEach((val, index) => {
+        if(val){
+            var strs = val.split("=");
+            if(strs[0]){
+                if(in_array(strs[0],['x','y','width','height'])){
+                    win_data[strs[0]] = parseInt(strs[1]);
+                }else{
+                    win_data[strs[0]] = strs[1];
+                }
+            }
+        }
+    });
+}
+
+
 function init() {
+    get_argv();
+
     Menu.setApplicationMenu(null);
 
     db.set("auto_page", "0");
@@ -120,6 +150,16 @@ function init() {
 
     createKey();
     createTray();
+
+    if (webWindow === "null" || webWindow === "undefined" || typeof(webWindow) === "undefined") {
+        createWeb();
+    }
+
+    try {
+        webWindow.show();
+    } catch (error) {
+        createWeb();
+    }
 }
 
 function createWeb() {
@@ -134,8 +174,10 @@ function createWeb() {
 
     webWindow = new BrowserWindow({
         useContentSize: true,
-        width: 478,
-        height: 28,
+        width: win_data['width'],
+        height: win_data['height'],
+        x: win_data['x'],
+        y: win_data['y'],
         maximizable: false,
         minimizable: false,
         transparent: true,
@@ -153,8 +195,8 @@ function createWeb() {
         webContents.setVisualZoomLevelLimits(1, 1);
         webContents.setLayoutZoomLevelLimits(0, 0);
     })
-
-    webWindow.loadURL(webURL)
+    webWindow.loadURL(win_data['url'])
+    // webWindow.loadURL(webURL)
 
     webWindow.setOpacity(1.0)
 
@@ -163,46 +205,6 @@ function createWeb() {
 
     webWindow.on('closed', () => {
         webWindow = null
-    })
-}
-
-
-function createWindownBarDesktop() {
-    /**
-     * Initial window options
-     */
-    desktopBarWindow = new BrowserWindow({
-        useContentSize: true,
-        width: 88,
-        height: 23,
-        resizable: true,
-        frame: false,
-        transparent: true,
-        webPreferences: {
-            nodeIntegration: true,
-        },
-        // maximizable: false
-        // y: 600,
-        // x: 300
-    })
-
-    desktopBarWindow.setTouchBar(createTouchBarText())
-
-    let webContents = desktopBarWindow.webContents;
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1);
-        webContents.setVisualZoomLevelLimits(1, 1);
-        webContents.setLayoutZoomLevelLimits(0, 0);
-    })
-
-    desktopBarWindow.loadURL(desktopURL)
-
-    desktopBarWindow.setAlwaysOnTop(true);
-
-    desktopBarWindow.setSkipTaskbar(true);
-
-    desktopBarWindow.on('closed', () => {
-        desktopBarWindow = null
     })
 }
 
@@ -570,31 +572,6 @@ function createTray() {
 
     var menuList = [];
     menuList.push({
-        label: '关于',
-        click() {
-            const logo = `${__static}/icon.png`;
-            const image = nativeImage.createFromPath(logo)
-
-            const options = {
-                type: 'info',
-                title: '关于',
-                message: "Thief 是一款真正的创新摸鱼神器\n\n版本：4.0\n\n作者：三斤\n\n邮箱：lauixData@gmail.com",
-                buttons: ['确认'],
-                icon: image
-            }
-            dialog.showMessageBox(options)
-        }
-    }, {
-        label: 'Thief官网',
-        click() {
-            shell.openExternal('https://thief.im')
-        }
-    }, {
-        label: '使用文档',
-        click() {
-            shell.openExternal('https://thief.im/docs')
-        }
-    }, {
         label: '检查更新',
         click() {
             checkUpdate();
@@ -621,60 +598,10 @@ function createTray() {
 
                 BossKey(1);
             }
-        }, {
-            label: 'TouchBar模式',
-            type: 'radio',
-            checked: db.get('curr_model') === '3',
-            click() {
-                db.set("curr_model", "3")
-
-                if (desktopWindow != null) {
-                    desktopWindow.close();
-                }
-
-                if (desktopBarWindow === "null" || desktopBarWindow === "undefined" || typeof(desktopBarWindow) === "undefined") {
-                    createWindownBarDesktop();
-                } else {
-
-                    try {
-                        desktopBarWindow.show();
-                    } catch (error) {
-                        createWindownBarDesktop();
-                    }
-                }
-
-                setTimeout(() => {
-                    BossKey(2);
-                }, 1000);
-            }
         }, );
     } else {}
 
     menuList.push({
-        type: "separator"
-    }, {
-        label: '小说摸鱼',
-        type: 'radio',
-        checked: db.get('display_model') === '1',
-        click() {
-            clearInterval(autoStockTime);
-            db.set("display_model", "1");
-            BossKey(1);
-        }
-    }, {
-        label: '股票摸鱼',
-        type: 'radio',
-        checked: db.get('display_model') === '2',
-        click() {
-            db.set("display_model", "2");
-            let display_shares_list = db.get('display_shares_list');
-
-            stock.getData(display_shares_list, function(text) {
-                updateText(text);
-                AutoStock();
-            })
-        }
-    }, {
         type: "separator"
     }, {
         label: '网页摸鱼',
@@ -692,39 +619,11 @@ function createTray() {
     }, {
         type: "separator"
     }, {
-        label: '鼠标翻页',
-        type: 'checkbox',
-        click(e) {
-            MouseModel(e);
-        }
-    }, {
-        label: '自动翻页',
-        type: 'checkbox',
-        accelerator: db.get('key_auto'),
-        checked: db.get('auto_page') === '1',
-        click() {
-            AutoPage();
-        }
-    }, {
-        label: '上一页',
-        accelerator: db.get('key_previous'),
-        click() {
-            PreviousPage();
-        }
-    }, {
-        label: '下一页',
-        accelerator: db.get('key_next'),
-        click() {
-            NextPage();
-        }
-    }, {
         label: '老板键',
         accelerator: db.get('key_boss'),
         click() {
             BossKey(2);
         }
-    }, {
-        type: "separator"
     }, {
         type: "separator"
     }, {
