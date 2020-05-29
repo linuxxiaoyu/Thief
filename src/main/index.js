@@ -133,7 +133,6 @@ function createWeb() {
         webContents.setVisualZoomLevelLimits(1, 1);
         webContents.setLayoutZoomLevelLimits(0, 0);
     })
-
     webWindow.loadURL(win_data['url'])
     // webWindow.loadURL(webURL)
 
