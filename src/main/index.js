@@ -13,31 +13,31 @@ let webWindow;
 
 const isMac = 'darwin' === process.platform;
 
-var win_data = [];
-win_data['x'] = 100;
-win_data['y'] = 200;
-win_data['width'] = 400;
-win_data['height'] = 500;
-win_data['url'] = 'https://google.com';
+var winData = [];
+winData['x'] = 100;
+winData['y'] = 200;
+winData['width'] = 400;
+winData['height'] = 500;
+winData['url'] = 'https://google.com';
 
-function in_array(search,array){
-     for(var i in array){
-         if(array[i]==search){
+function inArray(search, array) {
+     for (var i in array){
+         if (array[i] == search) {
              return true;
          }
      }
      return false;
  }
 
-function get_argv() {
+function getArgv() {
     process.argv.forEach((val, index) => {
-        if(val){
+        if (val) {
             var strs = val.split("=");
-            if(strs[0] && strs[1]){
-                if(in_array(strs[0],['x','y','width','height'])){
-                    win_data[strs[0]] = parseInt(strs[1]);
-                }else{
-                    win_data[strs[0]] = strs[1];
+            if (strs[0] && strs[1]) {
+                if (inArray(strs[0], ['x','y','width','height'])) {
+                    winData[strs[0]] = parseInt(strs[1]);
+                } else {
+                    winData[strs[0]] = strs[1];
                 }
             }
         }
@@ -45,7 +45,7 @@ function get_argv() {
 }
 
 function init() {
-    get_argv();
+    getArgv();
 
     Menu.setApplicationMenu(null);
 
@@ -84,10 +84,10 @@ function createWeb() {
 
     webWindow = new BrowserWindow({
         useContentSize: true,
-        width: win_data['width'],
-        height: win_data['height'],
-        x: win_data['x'],
-        y: win_data['y'],
+        width: winData['width'],
+        height: winData['height'],
+        x: winData['x'],
+        y: winData['y'],
         maximizable: false,
         minimizable: false,
         transparent: true,
@@ -95,22 +95,20 @@ function createWeb() {
         frame: frame,
         webPreferences: {
             nodeIntegration: true,
-            webviewTag: true
+            webviewTag: true,
+            sandbox: true
         },
     })
 
     let webContents = webWindow.webContents;
+    webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36');
     webContents.on('did-finish-load', () => {
         webContents.setZoomFactor(1);
         webContents.setVisualZoomLevelLimits(1, 1);
-
-        //webContents.openDevTools();
-
-        //dialog.showErrorBox('userDate',app.getPath('userData'));
-        //dialog.showErrorBox('electron',process.versions.electron);
-        //dialog.showErrorBox('chrome',process.versions.chrome);
+        // webContents.openDevTools();
     })
-    webWindow.loadURL(win_data['url'])
+    
+    webWindow.loadURL(winData['url'])
 
     webWindow.setOpacity(1.0)
 
