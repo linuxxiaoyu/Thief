@@ -1,6 +1,7 @@
 
 import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -19,6 +20,8 @@ winData['y'] = 200;
 winData['width'] = 400;
 winData['height'] = 500;
 winData['url'] = 'https://google.com';
+
+
 
 function inArray(search, array) {
      for (var i in array){
@@ -45,6 +48,7 @@ function getArgv() {
 }
 
 function init() {
+    var userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36';
     getArgv();
 
     Menu.setApplicationMenu(null);
@@ -101,14 +105,17 @@ function createWeb() {
     })
 
     let webContents = webWindow.webContents;
-    webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36');
+    webContents.setUserAgent(userAgent);
     webContents.on('did-finish-load', () => {
         webContents.setZoomFactor(1);
         webContents.setVisualZoomLevelLimits(1, 1);
+
         // webContents.openDevTools();
+        // BrowserWindow.addExtension('/users/admin/extension/Google-Translate-fbh5play');
     })
-    
-    webWindow.loadURL(winData['url'])
+    webWindow.loadURL(win_data['url'],{
+        userAgent: userAgent
+    })
 
     webWindow.setOpacity(1.0)
 
@@ -117,7 +124,9 @@ function createWeb() {
 
     webContents.on('new-window',(event,url)=>{
         event.preventDefault();
-        webWindow.loadURL(url);
+        webWindow.loadURL(url,{
+            userAgent: userAgent
+        });
     })
 
     webWindow.on('closed', () => {
