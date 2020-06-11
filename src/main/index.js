@@ -1,4 +1,3 @@
-
 import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 
 
@@ -20,8 +19,6 @@ winData['y'] = 200;
 winData['width'] = 400;
 winData['height'] = 500;
 winData['url'] = 'https://google.com';
-
-
 
 function inArray(search, array) {
      for (var i in array){
@@ -48,7 +45,6 @@ function getArgv() {
 }
 
 function init() {
-    var userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36';
     getArgv();
 
     Menu.setApplicationMenu(null);
@@ -70,7 +66,7 @@ function init() {
 
 function createSetting() {
     if (isMac) {
-        app.dock.hide();
+        // app.dock.hide(); // comment for test
     } else {
         // 
     }
@@ -80,6 +76,7 @@ function createWeb() {
     /**
      * Initial window options
      */
+    var userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36';
 
     var frame = true;
     if (isMac) {
@@ -105,7 +102,6 @@ function createWeb() {
     })
 
     let webContents = webWindow.webContents;
-    webContents.setUserAgent(userAgent);
     webContents.on('did-finish-load', () => {
         webContents.setZoomFactor(1);
         webContents.setVisualZoomLevelLimits(1, 1);
@@ -113,7 +109,7 @@ function createWeb() {
         // webContents.openDevTools();
         // BrowserWindow.addExtension('/users/admin/extension/Google-Translate-fbh5play');
     })
-    webWindow.loadURL(win_data['url'],{
+    webWindow.loadURL(winData['url'], {
         userAgent: userAgent
     })
 
