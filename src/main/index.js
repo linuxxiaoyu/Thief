@@ -1,5 +1,5 @@
+import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 
-import { app, BrowserWindow, Menu, ipcMain, dialog, session } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -13,31 +13,31 @@ let webWindow;
 
 const isMac = 'darwin' === process.platform;
 
-var win_data = [];
-win_data['x'] = 100;
-win_data['y'] = 200;
-win_data['width'] = 400;
-win_data['height'] = 500;
-win_data['url'] = 'https://google.com';
+var winData = [];
+winData['x'] = 100;
+winData['y'] = 200;
+winData['width'] = 400;
+winData['height'] = 500;
+winData['url'] = 'https://google.com';
 
-function in_array(search,array){
-     for(var i in array){
-         if(array[i]==search){
+function inArray(search, array) {
+     for (var i in array){
+         if (array[i] == search) {
              return true;
          }
      }
      return false;
  }
 
-function get_argv() {
+function getArgv() {
     process.argv.forEach((val, index) => {
-        if(val){
+        if (val) {
             var strs = val.split("=");
-            if(strs[0] && strs[1]){
-                if(in_array(strs[0],['x','y','width','height'])){
-                    win_data[strs[0]] = parseInt(strs[1]);
-                }else{
-                    win_data[strs[0]] = strs[1];
+            if (strs[0] && strs[1]) {
+                if (inArray(strs[0], ['x','y','width','height'])) {
+                    winData[strs[0]] = parseInt(strs[1]);
+                } else {
+                    winData[strs[0]] = strs[1];
                 }
             }
         }
@@ -45,7 +45,7 @@ function get_argv() {
 }
 
 function init() {
-    get_argv();
+    getArgv();
 
     Menu.setApplicationMenu(null);
 
@@ -66,7 +66,7 @@ function init() {
 
 function createSetting() {
     if (isMac) {
-        app.dock.hide();
+        // app.dock.hide(); // comment for test
     } else {
         // 
     }
@@ -76,6 +76,7 @@ function createWeb() {
     /**
      * Initial window options
      */
+    var userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36';
 
     var frame = true;
     if (isMac) {
@@ -84,10 +85,10 @@ function createWeb() {
 
     webWindow = new BrowserWindow({
         useContentSize: true,
-        width: win_data['width'],
-        height: win_data['height'],
-        x: win_data['x'],
-        y: win_data['y'],
+        width: winData['width'],
+        height: winData['height'],
+        x: winData['x'],
+        y: winData['y'],
         maximizable: false,
         minimizable: false,
         transparent: true,
@@ -105,15 +106,11 @@ function createWeb() {
         webContents.setZoomFactor(1);
         webContents.setVisualZoomLevelLimits(1, 1);
 
-        webContents.openDevTools();
-
-        //dialog.showErrorBox('userDate',app.getPath('userData'));
-        //dialog.showErrorBox('electron',process.versions.electron);
-        //dialog.showErrorBox('chrome',process.versions.chrome);
-        BrowserWindow.addExtension('/users/admin/extension/Google-Translate-fbh5play');
+        // webContents.openDevTools();
+        // BrowserWindow.addExtension('/users/admin/extension/Google-Translate-fbh5play');
     })
-    webWindow.loadURL(win_data['url'],{
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36'
+    webWindow.loadURL(winData['url'], {
+        userAgent: userAgent
     })
 
     webWindow.setOpacity(1.0)
@@ -124,7 +121,7 @@ function createWeb() {
     webContents.on('new-window',(event,url)=>{
         event.preventDefault();
         webWindow.loadURL(url,{
-            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36'
+            userAgent: userAgent
         });
     })
 
