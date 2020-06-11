@@ -1,5 +1,5 @@
 
-import { app, BrowserWindow, Menu, ipcMain } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain, dialog, session } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -95,7 +95,8 @@ function createWeb() {
         frame: frame,
         webPreferences: {
             nodeIntegration: true,
-            webviewTag: true
+            webviewTag: true,
+            sandbox: true
         },
     })
 
@@ -104,13 +105,16 @@ function createWeb() {
         webContents.setZoomFactor(1);
         webContents.setVisualZoomLevelLimits(1, 1);
 
-        //webContents.openDevTools();
+        webContents.openDevTools();
 
         //dialog.showErrorBox('userDate',app.getPath('userData'));
         //dialog.showErrorBox('electron',process.versions.electron);
         //dialog.showErrorBox('chrome',process.versions.chrome);
+        BrowserWindow.addExtension('/users/admin/extension/Google-Translate-fbh5play');
     })
-    webWindow.loadURL(win_data['url'])
+    webWindow.loadURL(win_data['url'],{
+        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36'
+    })
 
     webWindow.setOpacity(1.0)
 
@@ -119,7 +123,9 @@ function createWeb() {
 
     webContents.on('new-window',(event,url)=>{
         event.preventDefault();
-        webWindow.loadURL(url);
+        webWindow.loadURL(url,{
+            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari/537.36'
+        });
     })
 
     webWindow.on('closed', () => {
